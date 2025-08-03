@@ -3,140 +3,77 @@ name = "bustcall"
 version = "0.1.0"
 edition = "2021"
 authors = ["OBINexus Team <obinexus@obinexus.com>"]
-description = "World's first polyglot cache buster with constitutional compliance - OBINexus MVP"
+description = "World's first polyglot cache buster with constitutional compliance"
 license = "Apache-2.0"
-repository = "https://github.com/obinexus/bustcall"
-documentation = "https://docs.rs/bustcall"
-keywords = ["cache", "polyglot", "rust", "obinexus", "ci-cd"]
-categories = ["development-tools", "caching", "command-line-utilities"]
 
-# Binary declarations
+[lib]
+name = "bustcall_core"
+crate-type = ["cdylib", "rlib"]
+
+# Binary targets for OBINexus architecture
 [[bin]]
 name = "bustcall"
 path = "src/main.rs"
+required-features = ["cli"]
 
 [[bin]]
 name = "bustcall-daemon"
+path = "src/bin/bustcall-daemon.rs"
+required-features = ["daemon"]
+
+[[bin]]
+name = "daemon"
 path = "src/bin/daemon.rs"
+required-features = ["daemon", "byzantine-consensus"]
 
 [dependencies]
-tokio = { version = "1.0", features = ["full"] }
-futures = "0.3"
-anyhow = "1.0"
-log = "0.4"
+# Core dependencies (always available)
 serde = { version = "1.0", features = ["derive"] }
-rand = "0.8"  # Add missing dependency
-
-[features]
-default = ["daemon", "ffi"]
-ffi = ["ffi-all"]
-ffi-all = ["python-bindings", "c-bindings"]
-byzantine-consensus = ["tokio/full", "futures"]
-daemon = ["byzantine-consensus"]
-
-# Serialization
-serde = { version = "1.0", features = ["derive"] }
-serde_json = "1.0"
-
-# Error handling
+toml = "0.8"
+notify = "6.1"
+sha2 = "0.10"
+hex = "0.4"
 anyhow = "1.0"
-thiserror = "1.0"
-
-# Logging
 log = "0.4"
 env_logger = "0.10"
 
-# Time and UUID
-chrono = { version = "0.4", features = ["serde"] }
-uuid = { version = "1.0", features = ["v4"] }
+# Async runtime for Byzantine consensus
+tokio = { version = "1.0", features = ["full"], optional = true }
+futures = { version = "0.3", optional = true }
+parking_lot = { version = "0.12", optional = true }
 
-# Cryptography
-sha2 = "0.10"
-hex = "0.4"
+# CLI dependencies
+clap = { version = "4.5", features = ["derive"], optional = true }
 
-# System interfaces
-libc = "0.2"
-systemstat = { version = "0.2", optional = true }
-sysinfo = { version = "0.29", optional = true }
+# FFI bindings (optional)
+pyo3 = { version = "0.20", optional = true }
 
-# Configuration
-toml = "0.8"
-
-# File watching
-notify = "6.0"
-
-# Concurrent data structures (FIXED DEPENDENCIES)
-dashmap = { version = "5.5", optional = true }
-crossbeam = { version = "0.8", optional = true }
-
-# CLI (optional)
-clap = { version = "4.0", features = ["derive"], optional = true }
-
-# C bindings
-cbindgen = { version = "0.24", optional = true }
-
-# Optional integrations with corrected feature gates
-redis = { version = "0.23", features = ["tokio-comp"], optional = true }
-napi = { version = "2.13", features = ["full"], optional = true }
-napi-derive = { version = "2.13", optional = true }
-pyo3 = { version = "0.19", features = ["auto-initialize"], optional = true }
-
-# FaultTorrent-specific dependencies
-futures = "0.3"
-tokio-util = "0.7"
-parking_lot = "0.12"
-
-[dev-dependencies]
-tempfile = "3.0"
-mockall = "0.11"
-proptest = "1.0"
-tokio-test = "0.4"
+# Random number generation for proof-of-work
+rand = { version = "0.8", optional = true }
 
 [features]
-default = ["cli", "self-healing", "dimensional-cache"]
-ffi = ["ffi-all"]  # Aggregate feature
-byzantine-consensus = ["tokio/full", "futures"]
-daemon = ["byzantine-consensus", "unix-process-spawning"]
+# Default feature set for basic operation
+default = ["cli"]
 
 # Core features
 cli = ["clap"]
-self-healing = ["systemstat", "sysinfo"]
-dimensional-cache = ["redis", "dashmap", "crossbeam"]
+daemon = ["tokio", "futures", "parking_lot", "rand"]
+byzantine-consensus = ["daemon", "tokio/full"]
 
-# Language bindings
-node-bindings = ["napi", "napi-derive"]
+# FFI bindings
+ffi = ["ffi-all"]
+ffi-all = ["python-bindings", "c-bindings"] 
 python-bindings = ["pyo3"]
-ffi-all = ["node-bindings", "python-bindings", "cbindgen"]
+c-bindings = []
 
-# FaultTorrent features
-fault-torrent = ["dimensional-cache", "self-healing"]
-byzantine-consensus = ["fault-torrent"]
-
-# Daemon mode
-daemon = ["fault-torrent", "byzantine-consensus"]
-
-[build-dependencies]
-cbindgen = "0.24"
+# Development and testing
+development = ["daemon", "byzantine-consensus", "ffi-all"]
 
 [profile.release]
+opt-level = "z"
 lto = true
 codegen-units = 1
-panic = "abort"
-strip = true
 
 [profile.dev]
+opt-level = 0
 debug = true
-overflow-checks = true
-
-[package.metadata.obinexus]
-polycore-version = "v2"
-constitutional-compliance = true
-semverx-channel = "alpha"
-rift-architecture = "enabled"
-gosilang-bindings = "planned"
-dimensional-cache-version = "v1"
-fault-torrent-version = "v1"
-
-[package.metadata.docs.rs]
-all-features = true
-rustdoc-args = ["--cfg", "docsrs"]
