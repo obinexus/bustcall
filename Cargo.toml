@@ -83,6 +83,9 @@ tokio-test = "0.4"
 
 [features]
 default = ["cli", "self-healing", "dimensional-cache"]
+ffi = ["ffi-all"]  # Aggregate feature
+byzantine-consensus = ["tokio/full", "futures"]
+daemon = ["byzantine-consensus", "unix-process-spawning"]
 
 # Core features
 cli = ["clap"]
