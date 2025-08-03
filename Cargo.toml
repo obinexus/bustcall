@@ -2,68 +2,86 @@
 name = "bustcall"
 version = "0.1.0"
 edition = "2021"
-description = "OBINexus CI/CD bustcall daemon and core library"
-license = "MIT"
+authors = ["OBINexus Team <obinexus@obinexus.com>"]
+description = "World's first polyglot cache buster with constitutional compliance - OBINexus MVP"
+license = "Apache-2.0"
 repository = "https://github.com/obinexus/bustcall"
+documentation = "https://docs.rs/bustcall"
+keywords = ["cache", "polyglot", "rust", "obinexus", "ci-cd"]
+categories = ["development-tools", "caching", "command-line-utilities"]
 
-[lib]
-name = "bustcall_core"
-path = "src/lib.rs"
-crate-type = ["cdylib", "rlib"]
-
-# Primary CLI binary
+# Binary declarations
 [[bin]]
 name = "bustcall"
-path = "src/cli/main.rs"
-required-features = ["cli"]
+path = "src/main.rs"
 
-# Daemon binary
 [[bin]]
 name = "bustcall-daemon"
-path = "src/daemon/main.rs"
-required-features = ["daemon"]
-
-[features]
-default = ["cli"]
-cli = ["clap", "tokio"]
-daemon = ["tokio", "serde", "serde_json"]
-python-bindings = ["pyo3"]
-ffi = ["libc"]
+path = "src/bin/daemon.rs"
 
 [dependencies]
-# Core dependencies
-log = "0.4"
-env_logger = "0.10"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tokio = { version = "1.0", features = ["full"] }
+clap = { version = "4.0", features = ["derive"], optional = true }
 anyhow = "1.0"
 thiserror = "1.0"
-
-# CLI features
-clap = { version = "4.0", features = ["derive"], optional = true }
-
-# Async runtime
-tokio = { version = "1.0", features = ["full"], optional = true }
-
-# Serialization
-serde = { version = "1.0", features = ["derive"], optional = true }
-serde_json = { version = "1.0", optional = true }
-
-# FFI bindings
-pyo3 = { version = "0.20", features = ["extension-module"], optional = true }
-libc = { version = "0.2", optional = true }
+log = "0.4"
+env_logger = "0.10"
+chrono = { version = "0.4", features = ["serde"] }
+uuid = { version = "1.0", features = ["v4"] }
+sha2 = "0.10"
+hex = "0.4"
+libc = "0.2"
+cbindgen = "0.24"
+redis = { version = "0.23", features = ["tokio-comp"] }
+napi = { version = "2.13", features = ["full"], optional = true }
+napi-derive = { version = "2.13", optional = true }
+pyo3 = { version = "0.19", features = ["auto-initialize"], optional = true }
+systemstat = "0.2"
+sysinfo = "0.29"
+toml = "0.8"
+notify = "6.0"
+dashmap = "5.5"
+crossbeam = "0.8"
 
 [dev-dependencies]
 tempfile = "3.0"
-assert_cmd = "2.0"
-predicates = "3.0"
+mockall = "0.11"
+proptest = "1.0"
+
+[features]
+default = ["cli", "self-healing", "dimensional-cache"]
+cli = ["clap"]
+self-healing = ["systemstat", "sysinfo"]
+dimensional-cache = ["redis", "dashmap", "crossbeam"]
+node-bindings = ["napi", "napi-derive"]
+python-bindings = ["pyo3"]
+ffi-all = ["node-bindings", "python-bindings"]
+
+demon = []
 
 [build-dependencies]
-pyo3-build-config = { version = "0.20", optional = true }
+cbindgen = "0.24"
 
-# Python extension configuration
-[tool.cibuildwheel]
-build = "cp38-* cp39-* cp310-* cp311-*"
-skip = "*-win32 *-manylinux_i686"
+[profile.release]
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true
 
-[package.metadata.maturin]
-name = "bustcall_core"
-module-name = "bustcall_core"
+[profile.dev]
+debug = true
+overflow-checks = true
+
+[package.metadata.obinexus]
+polycore-version = "v2"
+constitutional-compliance = true
+semverx-channel = "alpha"
+rift-architecture = "enabled"
+gosilang-bindings = "planned"
+dimensional-cache-version = "v1"
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
