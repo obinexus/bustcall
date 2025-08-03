@@ -23,6 +23,7 @@ use serde::{Deserialize, Serialize};
 use anyhow::{Result, Context, anyhow};
 use log::{info, warn, error, debug, trace};
 
+
 /// Byzantine fault state levels aligned with OBINexus category theory
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 pub enum FaultLevel {
