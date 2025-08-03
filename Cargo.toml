@@ -10,7 +10,7 @@ documentation = "https://docs.rs/bustcall"
 keywords = ["cache", "polyglot", "rust", "obinexus", "ci-cd"]
 categories = ["development-tools", "caching", "command-line-utilities"]
 
-
+# Binary configuration only - remove [lib] section for CLI tool
 [[bin]]
 name = "bustcall"
 path = "src/main.rs"
@@ -33,6 +33,9 @@ hex = "0.4"
 libc = "0.2"
 cbindgen = "0.24"
 
+# Redis integration for dimensional cache system
+redis = { version = "0.23", features = ["tokio-comp"] }
+
 # Node.js FFI via napi
 napi = { version = "2.13", features = ["full"], optional = true }
 napi-derive = { version = "2.13", optional = true }
@@ -44,15 +47,20 @@ pyo3 = { version = "0.19", features = ["auto-initialize"], optional = true }
 systemstat = "0.2"
 sysinfo = "0.29"
 
+# Dimensional cache dependencies
+dashmap = "5.5"  # Lock-free concurrent hashmap for cache_evicon
+crossbeam = "0.8"  # Lock-free data structures for heap_prioritizer
+
 [dev-dependencies]
 tempfile = "3.0"
 mockall = "0.11"
 proptest = "1.0"
 
 [features]
-default = ["cli", "self-healing"]
+default = ["cli", "self-healing", "dimensional-cache"]
 cli = ["clap"]
 self-healing = ["systemstat", "sysinfo"]
+dimensional-cache = ["redis", "dashmap", "crossbeam"]
 node-bindings = ["napi", "napi-derive"]
 python-bindings = ["pyo3"]
 ffi-all = ["node-bindings", "python-bindings"]
@@ -77,6 +85,7 @@ constitutional-compliance = true
 semverx-channel = "alpha"
 rift-architecture = "enabled"
 gosilang-bindings = "planned"
+dimensional-cache-version = "v1"
 
 [package.metadata.docs.rs]
 all-features = true
