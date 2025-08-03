@@ -220,10 +220,15 @@ impl FaultTorrentStaging {
         info!("✅ FaultTorrent daemon services started");
         
         // Wait for all services (this runs indefinitely)
-        match join_all(handles).await {
-            Ok(_) => Ok(()),
-            Err(e) => Err(anyhow!("Daemon service failure: {}", e)),
-        }
+     let results = join_all(handles).await;
+     for result in results {
+        if let Err(e) = result {
+        error!("Delegate node failed: {}", e);
+        return Err(anyhow!("Byzantine consensus failure: {}", e));
+    }
+    }
+    
+    Ok(())
     }
     
     /// Register the root process node
