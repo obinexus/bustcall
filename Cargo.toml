@@ -20,8 +20,19 @@ name = "bustcall-daemon"
 path = "src/bin/daemon.rs"
 
 [dependencies]
-# Core async runtime
 tokio = { version = "1.0", features = ["full"] }
+futures = "0.3"
+anyhow = "1.0"
+log = "0.4"
+serde = { version = "1.0", features = ["derive"] }
+rand = "0.8"  # Add missing dependency
+
+[features]
+default = ["daemon", "ffi"]
+ffi = ["ffi-all"]
+ffi-all = ["python-bindings", "c-bindings"]
+byzantine-consensus = ["tokio/full", "futures"]
+daemon = ["byzantine-consensus"]
 
 # Serialization
 serde = { version = "1.0", features = ["derive"] }
