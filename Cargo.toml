@@ -37,6 +37,14 @@ anyhow = "1.0"
 log = "0.4"
 env_logger = "0.10"
 
+# Error handling framework
+thiserror = "1.0"
+
+# Caching and data structures
+dashmap = "5.5"
+redis = { version = "0.24", optional = true }
+tempfile = "3.8"
+
 # Async runtime for Byzantine consensus
 tokio = { version = "1.0", features = ["full"], optional = true }
 futures = { version = "0.3", optional = true }
@@ -59,6 +67,7 @@ default = ["cli"]
 cli = ["clap"]
 daemon = ["tokio", "futures", "parking_lot", "rand"]
 byzantine-consensus = ["daemon", "tokio/full"]
+redis-backend = ["redis"]
 
 # FFI bindings
 ffi = ["ffi-all"]
@@ -67,7 +76,7 @@ python-bindings = ["pyo3"]
 c-bindings = []
 
 # Development and testing
-development = ["daemon", "byzantine-consensus", "ffi-all"]
+development = ["daemon", "byzantine-consensus", "ffi-all", "redis-backend"]
 
 [profile.release]
 opt-level = "z"
