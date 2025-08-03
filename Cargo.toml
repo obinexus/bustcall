@@ -2,91 +2,35 @@
 name = "bustcall"
 version = "0.1.0"
 edition = "2021"
-authors = ["OBINexus Team <obinexus@obinexus.com>"]
-description = "World's first polyglot cache buster with constitutional compliance - OBINexus MVP"
-license = "Apache-2.0"
-repository = "https://github.com/obinexus/bustcall"
-documentation = "https://docs.rs/bustcall"
-keywords = ["cache", "polyglot", "rust", "obinexus", "ci-cd"]
-categories = ["development-tools", "caching", "command-line-utilities"]
 
-# Binary configuration only - remove [lib] section for CLI tool
+[lib]
+name = "bustcall_core"
+crate-type = ["cdylib", "rlib"]
+
 [[bin]]
 name = "bustcall"
-path = "src/main.rs"
+required-features = ["cli"]
 
 [dependencies]
+# Core dependencies (always available)
 serde = { version = "1.0", features = ["derive"] }
-serde_json = "1.0"
-tokio = { version = "1.0", features = ["full"] }
-clap = { version = "4.0", features = ["derive"] }
-anyhow = "1.0"
-thiserror = "1.0"
-log = "0.4"
-env_logger = "0.10"
-chrono = { version = "0.4", features = ["serde"] }
-uuid = { version = "1.0", features = ["v4"] }
+toml = "0.8"
+notify = "6.1"
 sha2 = "0.10"
 hex = "0.4"
 
-# FFI bindings for polyglot support
-libc = "0.2"
-cbindgen = "0.24"
+# Optional CLI dependencies
+clap = { version = "4.5", features = ["derive"], optional = true }
 
-# Redis integration for dimensional cache system
-redis = { version = "0.23", features = ["tokio-comp"] }
-
-# Node.js FFI via napi
-napi = { version = "2.13", features = ["full"], optional = true }
-napi-derive = { version = "2.13", optional = true }
-
-# Python FFI via PyO3
-pyo3 = { version = "0.19", features = ["auto-initialize"], optional = true }
-
-# Self-healing and monitoring
-systemstat = "0.2"
-sysinfo = "0.29"
-
-# Dimensional cache dependencies
-dashmap = "5.5"  # Lock-free concurrent hashmap for cache_evicon
-crossbeam = "0.8"  # Lock-free data structures for heap_prioritizer
-
-[dev-dependencies]
-tempfile = "3.0"
-mockall = "0.11"
-proptest = "1.0"
+# FFI bindings (optional)
+pyo3 = { version = "0.20", optional = true }
 
 [features]
-default = ["cli", "self-healing", "dimensional-cache"]
+default = []
 cli = ["clap"]
-self-healing = ["systemstat", "sysinfo"]
-dimensional-cache = ["redis", "dashmap", "crossbeam"]
-node-bindings = ["napi", "napi-derive"]
 python-bindings = ["pyo3"]
-ffi-all = ["node-bindings", "python-bindings"]
-
-[build-dependencies]
-cbindgen = "0.24"
+all = ["cli", "python-bindings"]
 
 [profile.release]
+opt-level = "z"
 lto = true
-codegen-units = 1
-panic = "abort"
-strip = true
-
-[profile.dev]
-debug = true
-overflow-checks = true
-
-# OBINexus Constitutional Compliance Metadata
-[package.metadata.obinexus]
-polycore-version = "v2"
-constitutional-compliance = true
-semverx-channel = "alpha"
-rift-architecture = "enabled"
-gosilang-bindings = "planned"
-dimensional-cache-version = "v1"
-
-[package.metadata.docs.rs]
-all-features = true
-rustdoc-args = ["--cfg", "docsrs"]
