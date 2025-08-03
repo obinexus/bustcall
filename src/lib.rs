@@ -2,15 +2,16 @@
 //! 
 //! This crate provides process monitoring, notification, and daemon management
 //! capabilities for the OBINexus CI/CD pipeline.
+#[cfg(feature = "ffi")]
 
 pub mod core;
 pub mod utils;
-
-#[cfg(feature = "ffi")]
 pub mod ffi;
 pub mod dimensional_cache;
 pub mod pid_watcher;
 
+#[cfg(feature = "ffi")]
+pub mod ffi;
 
 // Re-export core functionality
 pub use core::{
