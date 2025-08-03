@@ -8,6 +8,9 @@ pub mod utils;
 
 #[cfg(feature = "ffi")]
 pub mod ffi;
+pub mod dimensional_cache;
+pub mod pid_watcher;
+
 
 // Re-export core functionality
 pub use core::{
