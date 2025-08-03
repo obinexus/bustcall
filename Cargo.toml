@@ -55,8 +55,8 @@ toml = "0.8"
 notify = "6.0"
 
 # Concurrent data structures (FIXED DEPENDENCIES)
-dashmap = "5.5"
-crossbeam = "0.8"
+dashmap = { version = "5.5", optional = true }
+crossbeam = { version = "0.8", optional = true }
 
 # CLI (optional)
 clap = { version = "4.0", features = ["derive"], optional = true }
