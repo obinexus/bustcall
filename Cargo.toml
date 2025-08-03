@@ -10,9 +10,6 @@ documentation = "https://docs.rs/bustcall"
 keywords = ["cache", "polyglot", "rust", "obinexus", "ci-cd"]
 categories = ["development-tools", "caching", "command-line-utilities"]
 
-[lib]
-name = "bustcall"
-crate-type = ["cdylib", "rlib"]
 
 [[bin]]
 name = "bustcall"

@@ -1,0 +1,83 @@
+.
+├── bustcall
+├── Cargo.lock
+├── Cargo.toml
+├── README.md
+├── src
+│   ├── ffi.rs
+│   ├── main.rs
+│   └── self_healing.rs
+└── target
+    ├── CACHEDIR.TAG
+    └── debug
+        ├── build
+        ├── bustcall
+        ├── bustcall.d
+        ├── deps
+        │   ├── bustcall-f30fcc8294bd9625
+        │   └── bustcall-f30fcc8294bd9625.d
+        ├── examples
+        └── incremental
+            └── bustcall-2di61ooyrunoa
+                ├── s-h9tpj232vr-0kg42ja-3ze04ew9l4f77w6fltq0gag90
+                │   ├── 04j5wht65atcj29nt9x4p6ey7.o
+                │   ├── 0d5szbps760j2swwequsbbm6p.o
+                │   ├── 0xwoabrpcqga5enngzicp0qi5.o
+                │   ├── 16ny9y488kjxbvyzilcvy6k8i.o
+                │   ├── 178a934m4nomesq2ejsx6kjw1.o
+                │   ├── 1f6k2pst5czaeg1aullf5gi6q.o
+                │   ├── 1g0gohsu3thr0el9h6jknbyms.o
+                │   ├── 1y9ukyn9nm6625wccd0ujej3b.o
+                │   ├── 27ktsynifnish5m4dsqptyj2x.o
+                │   ├── 2aq19fh3t6bwwvnutyyjrapvt.o
+                │   ├── 2fvmep4tjheuz5ajjwdo0aafd.o
+                │   ├── 2qyrcfmdoqcd00jrugo1wixu7.o
+                │   ├── 3c0426jq9wfar8twrzm3b43w9.o
+                │   ├── 3frs8hxs5bh6plxm0d6gxyr2u.o
+                │   ├── 3j8mzos24fsskoit9635yejg5.o
+                │   ├── 3v8450cj3dqsgys4g7b5yfa8q.o
+                │   ├── 4g8ghpsn466rfe8w024eth2jq.o
+                │   ├── 4w8lz2mf0k5696hh7c3761c19.o
+                │   ├── 57xjnxdjrg72h3slsldaexuim.o
+                │   ├── 5hy1eahgq30ldynyxz2nsudwu.o
+                │   ├── 5imu9wxkw4k29trf3jd1byu6u.o
+                │   ├── 5j4wkeybca8culg5iw87ehwjq.o
+                │   ├── 6alys6qfd2igd1akd9qgtqyqs.o
+                │   ├── 6b3qkicqpkkib79szdwk1dm4i.o
+                │   ├── 6c309il46gxo29m9ho9zru5eo.o
+                │   ├── 6ca418e93r5mjqsccvru2sn1v.o
+                │   ├── 6h07jss25sc7t01f3rjjowhwx.o
+                │   ├── 6rpq3sxdzspzfm5ll61ojw8kf.o
+                │   ├── 6uivr19w34xz58daxirkc73sa.o
+                │   ├── 6uxoislrbgz79mp7phwbrvsn1.o
+                │   ├── 6v20qve5iacu3qbpwpzk5gkru.o
+                │   ├── 7ah9t1xrefe9t5kwgeuwk1cjm.o
+                │   ├── 7xjcvqpe84owkihmnz5hfkbw6.o
+                │   ├── 82iaaub9alxz2tgaevgr03o09.o
+                │   ├── 858vkey8x8xu6ep3e37x0baav.o
+                │   ├── 8jido4csalxo4qply752v08a6.o
+                │   ├── 8z3mrhpvt2yp3x7i3sn9dqdck.o
+                │   ├── 9lismwtcx30iv9v8aamrepp9x.o
+                │   ├── 9n1g9idxzqcawkdicj0d9ydma.o
+                │   ├── 9nhmxotzmu9wtvr89nalot4sp.o
+                │   ├── a2czr1lcvsf1spjhr7kfcv08z.o
+                │   ├── a77zgct0132dxul62hr5b0xj4.o
+                │   ├── awfpckcse3mcii64ngkpl6koh.o
+                │   ├── bxkmbpas9yy33n1h9tcxdkg43.o
+                │   ├── c6gb3yqk1ko6ubt70eqn631v1.o
+                │   ├── ckpi9h0hboqal2z5glcjkol5y.o
+                │   ├── cp8z2pht1caruzzwjrmcmyge1.o
+                │   ├── d08xaed2b6b1uievjt74lrr8s.o
+                │   ├── d5v64run8jdxn1ahka2kpck59.o
+                │   ├── db0tcu2ufmfgm9vha8r7n2ksc.o
+                │   ├── dep-graph.bin
+                │   ├── e2l72fzbasxvy77wdkzofu20b.o
+                │   ├── e698rbvdbe4hj3kuvm0auwqst.o
+                │   ├── ed5rf70aqpb4gcjenvqds5a0p.o
+                │   ├── esukf2l6ipqlhs9yvqvvwpb1e.o
+                │   ├── ewtoim5uoppvxl509ieokg5ba.o
+                │   ├── query-cache.bin
+                │   └── work-products.bin
+                └── s-h9tpj232vr-0kg42ja.lock
+
+10 directories, 71 files
