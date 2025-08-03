@@ -20,46 +20,86 @@ name = "bustcall-daemon"
 path = "src/bin/daemon.rs"
 
 [dependencies]
+# Core async runtime
+tokio = { version = "1.0", features = ["full"] }
+
+# Serialization
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
-tokio = { version = "1.0", features = ["full"] }
-clap = { version = "4.0", features = ["derive"], optional = true }
+
+# Error handling
 anyhow = "1.0"
 thiserror = "1.0"
+
+# Logging
 log = "0.4"
 env_logger = "0.10"
+
+# Time and UUID
 chrono = { version = "0.4", features = ["serde"] }
 uuid = { version = "1.0", features = ["v4"] }
+
+# Cryptography
 sha2 = "0.10"
 hex = "0.4"
+
+# System interfaces
 libc = "0.2"
-cbindgen = "0.24"
-redis = { version = "0.23", features = ["tokio-comp"] }
+systemstat = { version = "0.2", optional = true }
+sysinfo = { version = "0.29", optional = true }
+
+# Configuration
+toml = "0.8"
+
+# File watching
+notify = "6.0"
+
+# Concurrent data structures (FIXED DEPENDENCIES)
+dashmap = "5.5"
+crossbeam = "0.8"
+
+# CLI (optional)
+clap = { version = "4.0", features = ["derive"], optional = true }
+
+# C bindings
+cbindgen = { version = "0.24", optional = true }
+
+# Optional integrations with corrected feature gates
+redis = { version = "0.23", features = ["tokio-comp"], optional = true }
 napi = { version = "2.13", features = ["full"], optional = true }
 napi-derive = { version = "2.13", optional = true }
 pyo3 = { version = "0.19", features = ["auto-initialize"], optional = true }
-systemstat = "0.2"
-sysinfo = "0.29"
-toml = "0.8"
-notify = "6.0"
-dashmap = "5.5"
-crossbeam = "0.8"
+
+# FaultTorrent-specific dependencies
+futures = "0.3"
+tokio-util = "0.7"
+parking_lot = "0.12"
 
 [dev-dependencies]
 tempfile = "3.0"
 mockall = "0.11"
 proptest = "1.0"
+tokio-test = "0.4"
 
 [features]
 default = ["cli", "self-healing", "dimensional-cache"]
+
+# Core features
 cli = ["clap"]
 self-healing = ["systemstat", "sysinfo"]
 dimensional-cache = ["redis", "dashmap", "crossbeam"]
+
+# Language bindings
 node-bindings = ["napi", "napi-derive"]
 python-bindings = ["pyo3"]
-ffi-all = ["node-bindings", "python-bindings"]
+ffi-all = ["node-bindings", "python-bindings", "cbindgen"]
 
-demon = []
+# FaultTorrent features
+fault-torrent = ["dimensional-cache", "self-healing"]
+byzantine-consensus = ["fault-torrent"]
+
+# Daemon mode
+daemon = ["fault-torrent", "byzantine-consensus"]
 
 [build-dependencies]
 cbindgen = "0.24"
@@ -81,6 +121,7 @@ semverx-channel = "alpha"
 rift-architecture = "enabled"
 gosilang-bindings = "planned"
 dimensional-cache-version = "v1"
+fault-torrent-version = "v1"
 
 [package.metadata.docs.rs]
 all-features = true
